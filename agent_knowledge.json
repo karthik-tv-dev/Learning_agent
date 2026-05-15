@@ -1,0 +1,69 @@
+{
+  "knowledge": [
+    {
+      "input": "hello",
+      "response": "Hello! How can I assist you today?",
+      "confidence": 3
+    },
+    {
+      "input": "hi",
+      "response": "Hi there! What can I do for you?",
+      "confidence": 3
+    },
+    {
+      "input": "how are you",
+      "response": "I'm doing well, thank you for asking! How about you?",
+      "confidence": 3
+    },
+    {
+      "input": "what is your name",
+      "response": "I'm a Learning Agent, designed to improve through our conversations.",
+      "confidence": 3
+    },
+    {
+      "input": "who are you",
+      "response": "I'm an AI agent that learns from our interactions. The more we talk, the smarter I get!",
+      "confidence": 3
+    },
+    {
+      "input": "bye",
+      "response": "Goodbye! Have a great day!",
+      "confidence": 3
+    },
+    {
+      "input": "thank you",
+      "response": "You're welcome! Is there anything else I can help with?",
+      "confidence": 3
+    },
+    {
+      "input": "what can you do",
+      "response": "I can converse with you and learn from our interactions. I store what I learn and get better at responding over time!",
+      "confidence": 3
+    },
+    {
+      "input": "help",
+      "response": "I'm here to help! Just type your message and I'll do my best to respond. If I don't know something, you can teach me!",
+      "confidence": 3
+    },
+    {
+      "input": "learn model",
+      "response": "hi",
+      "confidence": 1,
+      "learned_at": "2026-05-15T20:30:30.110567"
+    },
+    {
+      "input": "can you automate things",
+      "response": "Can you do automation tasks?",
+      "confidence": 1,
+      "learned_at": "2026-05-15T20:31:38.112746"
+    },
+    {
+      "input": "can you do automation tasks",
+      "response": "Hi",
+      "confidence": 1,
+      "learned_at": "2026-05-15T20:31:58.935108"
+    }
+  ],
+  "interaction_count": 7,
+  "last_updated": "2026-05-15T20:31:58.935121"
+}
