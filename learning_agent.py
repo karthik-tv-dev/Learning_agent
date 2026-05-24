@@ -1,13 +1,3 @@
-"""
-Learning AI Agent - An agent that improves over time based on interactions.
-
-This agent learns from conversations by:
-1. Storing conversation patterns in a knowledge base
-2. Finding similar patterns to respond appropriately
-3. Learning new responses when it doesn't know how to reply
-4. Using text similarity matching to find relevant responses
-"""
-
 import json
 import os
 import re
@@ -18,15 +8,10 @@ from typing import Optional
 
 
 class LearningAgent:
-    """A learning AI agent that improves through interactions."""
+    
 
     def __init__(self, knowledge_file: str = "agent_knowledge.json"):
-        """
-        Initialize the learning agent.
-
-        Args:
-            knowledge_file: Path to the file where knowledge is stored
-        """
+        
         self.knowledge_file = knowledge_file
         self.knowledge_base = []
         self.conversation_history = []
@@ -36,23 +21,18 @@ class LearningAgent:
         self.load_knowledge()
 
     def _normalize_text(self, text: str) -> str:
-        """Normalize text for comparison by lowercasing and removing punctuation."""
+        
         text = text.lower().strip()
         text = text.translate(str.maketrans("", "", string.punctuation))
         text = re.sub(r"\s+", " ", text)
         return text
 
     def _tokenize(self, text: str) -> list:
-        """Tokenize text into words."""
+        
         return self._normalize_text(text).split()
 
     def _similarity_score(self, text1: str, text2: str) -> float:
-        """
-        Calculate similarity between two texts using word overlap.
-
-        Returns:
-            A score between 0 and 1 indicating similarity
-        """
+        
         tokens1 = set(self._tokenize(text1))
         tokens2 = set(self._tokenize(text2))
 
@@ -65,7 +45,7 @@ class LearningAgent:
         return len(intersection) / len(union)
 
     def load_knowledge(self) -> None:
-        """Load the knowledge base from file."""
+       
         if os.path.exists(self.knowledge_file):
             try:
                 with open(self.knowledge_file, "r", encoding="utf-8") as f:
@@ -82,7 +62,7 @@ class LearningAgent:
             self._add_initial_knowledge()
 
     def _add_initial_knowledge(self) -> None:
-        """Add some initial knowledge to help the agent get started."""
+        
         initial_knowledge = [
             {"input": "hello", "response": "Hello! How can I assist you today?", "confidence": 3},
             {"input": "hi", "response": "Hi there! What can I do for you?", "confidence": 3},
@@ -99,7 +79,7 @@ class LearningAgent:
         print(f"[Agent] Added {len(initial_knowledge)} initial knowledge entries.")
 
     def save_knowledge(self) -> None:
-        """Save the knowledge base to file."""
+        
         data = {
             "knowledge": self.knowledge_base,
             "interaction_count": self.interaction_count,
@@ -109,12 +89,7 @@ class LearningAgent:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
     def _find_best_response(self, user_input: str) -> tuple[Optional[str], float]:
-        """
-        Find the best matching response for the given input.
-
-        Returns:
-            A tuple of (response, confidence_score)
-        """
+        
         if not self.knowledge_base:
             return None, 0.0
 
@@ -137,13 +112,7 @@ class LearningAgent:
         return None, 0.0
 
     def _learn_response(self, user_input: str, agent_response: str) -> None:
-        """
-        Learn a new input-response pair.
-
-        Args:
-            user_input: The user's input text
-            agent_response: The response the agent should learn
-        """
+        
         normalized_input = self._normalize_text(user_input)
 
         # Check if similar input already exists
@@ -168,7 +137,8 @@ class LearningAgent:
         print(f"[Agent] Learned new knowledge! Total entries: {len(self.knowledge_base)}")
 
     def _get_default_response(self) -> str:
-        """Get a default response when the agent doesn't understand."""
+        
+        
         defaults = [
             "I'm not sure I understand. Could you rephrase that?",
             "I haven't learned about that yet. Can you help me understand?",
@@ -179,15 +149,8 @@ class LearningAgent:
         return defaults[self.interaction_count % len(defaults)]
 
     def respond(self, user_input: str) -> str:
-        """
-        Generate a response to the user's input.
-
-        Args:
-            user_input: The user's message
-
-        Returns:
-            The agent's response
-        """
+        
+        
         self.interaction_count += 1
 
         # Handle learning mode
@@ -199,11 +162,11 @@ class LearningAgent:
 
         if normalized in ["learn mode", "teach me", "enable learning"]:
             self.learning_mode = True
-            return "Learning mode enabled! Send me an input and I'll ask you to teach me the response."
+            return 
 
         if normalized in ["exit learn mode", "disable learning", "stop learning"]:
             self.learning_mode = False
-            return "Learning mode disabled."
+            return 
 
         if normalized in ["stats", "status", "how smart are you"]:
             return (
@@ -216,8 +179,8 @@ class LearningAgent:
             if confirm.lower() in ["yes", "y"]:
                 self.knowledge_base = []
                 self._add_initial_knowledge()
-                return "Memory cleared! I'm back to my initial knowledge."
-            return "Memory clear cancelled."
+                return 
+            return 
 
         # Find and return the best response
         response, confidence = self._find_best_response(user_input)
@@ -238,13 +201,13 @@ class LearningAgent:
         return f"{default}\n\nI'm in learning mode now. Please teach me how to respond to: \"{user_input}\""
 
     def _handle_learning_mode(self, user_input: str) -> str:
-        """Handle input when in learning mode."""
+        
         if self.pending_input:
             # Learn the response for the pending input
             self._learn_response(self.pending_input, user_input)
             self.pending_input = None
             self.learning_mode = False
-            return "Got it! I've learned that response. I'm now back to normal mode."
+            return 
         else:
             # User sent input without a pending question
             # Try to respond normally first
@@ -257,11 +220,11 @@ class LearningAgent:
                 return f"I don't have a response for that yet. Please teach me how to respond to: \"{user_input}\""
 
     def get_conversation_history(self) -> list:
-        """Get the conversation history."""
+        
         return self.conversation_history
 
     def export_knowledge(self, filename: str = None) -> str:
-        """Export the knowledge base as readable text."""
+        
         if filename is None:
             filename = f"knowledge_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
 
@@ -285,7 +248,7 @@ class LearningAgent:
 
 
 def main():
-    """Main function to run the learning agent in interactive mode."""
+   
     print("=" * 60)
     print("  LEARNING AI AGENT")
     print("  An agent that improves through interactions!")
