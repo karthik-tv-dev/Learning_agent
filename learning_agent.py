@@ -2,7 +2,7 @@ import json
 import os
 import re
 import string
-from collections import Counter
+
 from datetime import datetime
 from typing import Optional
 
@@ -99,14 +99,14 @@ class LearningAgent:
 
         for entry in self.knowledge_base:
             score = self._similarity_score(normalized_input, entry["input"])
-            # Weight by confidence (how many times this has been reinforced)
+            
             weighted_score = score * min(entry.get("confidence", 1), 10) / 10
 
             if weighted_score > best_score:
                 best_score = weighted_score
                 best_match = entry
 
-        if best_match and best_score >= 0.3:  # Minimum threshold
+        if best_match and best_score >= 0.3: 
             return best_match["response"], best_score
 
         return None, 0.0
@@ -115,17 +115,17 @@ class LearningAgent:
         
         normalized_input = self._normalize_text(user_input)
 
-        # Check if similar input already exists
+        
         for entry in self.knowledge_base:
             if self._similarity_score(normalized_input, entry["input"]) > 0.8:
                 # Reinforce existing entry
                 entry["confidence"] = entry.get("confidence", 1) + 1
-                entry["response"] = agent_response  # Update with new response
+                entry["response"] = agent_response  
                 print(f"[Agent] Reinforced existing knowledge (confidence: {entry['confidence']})")
                 self.save_knowledge()
                 return
 
-        # Add new knowledge entry
+        
         new_entry = {
             "input": normalized_input,
             "response": agent_response,
@@ -145,7 +145,7 @@ class LearningAgent:
             "Interesting! I don't have a response for that yet. Want to teach me?",
             "I'm still learning. Could you explain what you mean?",
         ]
-        # Use interaction count to vary responses
+        
         return defaults[self.interaction_count % len(defaults)]
 
     def respond(self, user_input: str) -> str:
@@ -153,11 +153,11 @@ class LearningAgent:
         
         self.interaction_count += 1
 
-        # Handle learning mode
+        
         if self.learning_mode:
             return self._handle_learning_mode(user_input)
 
-        # Handle special commands
+        
         normalized = self._normalize_text(user_input)
 
         if normalized in ["learn mode", "teach me", "enable learning"]:
@@ -182,7 +182,7 @@ class LearningAgent:
                 return 
             return 
 
-        # Find and return the best response
+        
         response, confidence = self._find_best_response(user_input)
 
         if response:
@@ -194,7 +194,7 @@ class LearningAgent:
             })
             return f"{response} (confidence: {confidence:.0%})"
 
-        # If no good match, offer to learn
+        
         self.pending_input = user_input
         self.learning_mode = True
         default = self._get_default_response()
@@ -203,14 +203,13 @@ class LearningAgent:
     def _handle_learning_mode(self, user_input: str) -> str:
         
         if self.pending_input:
-            # Learn the response for the pending input
+            
             self._learn_response(self.pending_input, user_input)
             self.pending_input = None
             self.learning_mode = False
             return 
         else:
-            # User sent input without a pending question
-            # Try to respond normally first
+            
             response, confidence = self._find_best_response(user_input)
             if response:
                 self.learning_mode = False
@@ -229,7 +228,7 @@ class LearningAgent:
             filename = f"knowledge_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
 
         with open(filename, "w", encoding="utf-8") as f:
-            f.write(f"Learning Agent Knowledge Base\n")
+            f.write("Learning Agent Knowledge Base\n")
             f.write(f"Generated: {datetime.now().isoformat()}\n")
             f.write(f"Total entries: {len(self.knowledge_base)}\n")
             f.write(f"Total interactions: {self.interaction_count}\n")
@@ -286,7 +285,7 @@ def main():
                 history = agent.get_conversation_history()
                 if history:
                     print("\n--- Conversation History ---")
-                    for entry in history[-10:]:  # Show last 10 entries
+                    for entry in history[-10:]:  
                         print(f"  You: {entry['user']}")
                         print(f"  Agent: {entry['agent']}")
                         print()
@@ -308,3 +307,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+    
+    
+    
+    
+    
+    
+    
+    
